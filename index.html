@@ -56,7 +56,36 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;padding:10px 16px 4
 .pc{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line)}.pc img{width:44px;height:58px;object-fit:cover;border-radius:6px}.pc .g{display:grid;grid-template-columns:1fr 1fr;gap:6px}.pc select{padding:6px;font-size:.8rem}.pc label{margin:0 0 2px;font-size:.68rem}
 </style>
 </head>
-<body>
+<body><div id="lock" style="position:fixed;inset:0;z-index:99999;background:#0c0c11;display:flex;align-items:center;justify-content:center;padding:20px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif">
+  <div style="width:100%;max-width:340px;text-align:center;color:#f1f1f7">
+    <div style="font-size:3rem">🔒</div>
+    <h2 style="margin:8px 0 4px;font-size:1.6rem;background:linear-gradient(90deg,#ff3d71,#7c5cff);-webkit-background-clip:text;background-clip:text;color:transparent">ReelForge</h2>
+    <p style="margin:0 0 18px;color:#9a9db0">Enter password to continue</p>
+    <input id="lockPw" type="password" inputmode="numeric" placeholder="Password" autocomplete="off"
+      style="width:100%;padding:13px;border-radius:11px;border:1px solid #2a2a38;background:#171720;color:#f1f1f7;font-size:1.1rem;text-align:center;outline:none">
+    <button id="lockBtn"
+      style="width:100%;margin-top:12px;padding:13px;border:0;border-radius:11px;background:linear-gradient(90deg,#ff3d71,#7c5cff);color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer">Unlock</button>
+    <div id="lockErr" style="margin-top:10px;color:#ff6b8a;min-height:1.2em;font-size:.9rem"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var PASS="2463", lock=document.getElementById("lock"), pw=document.getElementById("lockPw"), err=document.getElementById("lockErr");
+  try{ if(sessionStorage.getItem("rf_ok")==="1"){ lock.remove(); return; } }catch(e){}
+  function check(){
+    if(pw.value===PASS){
+      try{ sessionStorage.setItem("rf_ok","1"); }catch(e){}
+      lock.remove();
+    }else{
+      err.textContent="Wrong password. Try again.";
+      pw.value=""; pw.focus();
+    }
+  }
+  document.getElementById("lockBtn").onclick=check;
+  pw.addEventListener("keydown",function(e){ if(e.key==="Enter") check(); });
+  pw.focus();
+})();
+</script>
 <div class="wrap">
   <h1>🎬 ReelForge</h1>
   <p class="sub">Add 3–5 photos, pick a vibe, and get a smooth HD video edit with transitions, effects and matching music. Everything happens on your device, so your photos are never uploaded.</p>
